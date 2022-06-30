@@ -21,6 +21,7 @@ push:
     - git config --global user.email "ecom@raiffeisen.ru"
     - git config --global user.name "user-ecom-git"
     - npm version $VERSION
+    - git fetch origin
     - git push https://$OPEN_SOURCE_GITHUB_LOGIN:$OPEN_SOURCE_GITHUB_TOKEN_NODE@github.com/Raiffeisen-DGTL/$APP_NAME.git HEAD:main --force v$VERSION
   only:
     - master
