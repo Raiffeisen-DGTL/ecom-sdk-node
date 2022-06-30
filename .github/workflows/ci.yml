@@ -18,6 +18,6 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - name: Install node_modules
         run: npm install
-      - run: npm publish --access public
+      - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}

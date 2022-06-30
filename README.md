@@ -1,8 +1,8 @@
 # Ecommerce payment API SDK
 
 [![Build Status](https://github.com/Raiffeisen-DGTL/ecom-sdk-node/actions/workflows/ci.yml/badge.svg)](https://github.com/Raiffeisen-DGTL/ecom-sdk-node/actions/workflows/ci.yml)
-[![Latest Stable Version](https://img.shields.io/npm/v/@raiffeisen-ecom/payment-sdk)](https://www.npmjs.com/package/@raiffeisen-ecom/payment-sdk)
-[![Total Downloads](https://img.shields.io/npm/dt/@raiffeisen-ecom/payment-sdk)](https://www.npmjs.com/package/@raiffeisen-ecom/payment-sdk)
+[![Latest Stable Version](https://img.shields.io/npm/v/@raiffeisen-ecom/payment-sdk-node)](https://www.npmjs.com/package/@raiffeisen-ecom/payment-sdk-node)
+[![Total Downloads](https://img.shields.io/npm/dt/@raiffeisen-ecom/payment-sdk-node)](https://www.npmjs.com/package/@raiffeisen-ecom/payment-sdk-node)
 
 SDK модуль для внедрения эквайринга Райффайзенбанка.
 
@@ -11,19 +11,19 @@ SDK модуль для внедрения эквайринга Райффайз
 Установка:
 
 ```bash
-$ npm require @raiffeisen-ecom/payment-sdk
+$ npm require @raiffeisen-ecom/payment-sdk-node
 ```
 
 Подключение для cjs-модулей:
 
 ```ts
-const { Client, ClientException } = require('@raiffeisen-ecom/payment-sdk');
+const { Client, ClientException } = require('@raiffeisen-ecom/payment-sdk-node');
 ```
 
 Подключение для esm-модулей:
 
 ```ts
-import { Client, ClientException } from '@raiffeisen-ecom/payment-sdk';
+import { Client, ClientException } from '@raiffeisen-ecom/payment-sdk-node';
 ```
 
 ## Документация
