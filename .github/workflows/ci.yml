@@ -1,39 +1,23 @@
-name: CI
-on: [push]
+name: Quality Check Main and Publish
+
+on:
+  push:
+    branches: ['main']
+
 jobs:
-  build:
-    name: Build, lint, and test on Node ${{ matrix.node }} and ${{ matrix.os }}
-
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        node: ['10.x', '12.x', '14.x']
-        os: [ubuntu-latest, windows-latest, macOS-latest]
-
+  check-and-publish:
+    name: "Quality Check Master and Publish"
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout repo
+      - name: "Checkout source code"
         uses: actions/checkout@v2
-
-      - name: Use Node ${{ matrix.node }}
+      - name: "Setup Node.js"
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node }}
+          node-version: 12
           registry-url: https://registry.npmjs.org/
-
-      - name: Install deps and build (with cache)
-        uses: bahmutov/npm-install@v1
-
-      - name: Lint
-        run: yarn lint
-
-      - name: Test
-        run: yarn test --ci --coverage --maxWorkers=2
-
-      - name: Build
-        run: yarn build
-
-      - name: Publish
-        run: yarn publish
+      - name: "Install node_modules"
+        run: npm install
+      - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
-
