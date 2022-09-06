@@ -50,6 +50,7 @@
   "devDependencies": {
     "@size-limit/preset-small-lib": "7.0.8",
     "@types/crypto-js": "4.1.1",
+    "graceful-fs": "4.2.4",
     "husky": "8.0.1",
     "size-limit": "7.0.8",
     "tsdx": "0.14.1",
