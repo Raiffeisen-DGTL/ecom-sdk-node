@@ -59,5 +59,8 @@
   "dependencies": {
     "cross-fetch": "3.1.5",
     "crypto-js": "4.1.1"
+  },
+  "resolutions": {
+    "graceful-fs": "4.2.4"
   }
 }
