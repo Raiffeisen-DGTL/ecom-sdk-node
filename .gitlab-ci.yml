@@ -5,7 +5,7 @@ stages:
 include:
   - project: 'acquiring/devops/pipelines'
     ref: master
-    file: '.checkmarx-java.yml'
+    file: '.checkmarx.yml'
 
 variables:
   VERSION: 1.1.$CI_PIPELINE_IID

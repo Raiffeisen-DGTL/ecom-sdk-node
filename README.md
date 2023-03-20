@@ -1,8 +1,8 @@
 # Ecommerce payment API SDK
 
 [![Build Status](https://github.com/Raiffeisen-DGTL/ecom-sdk-node/actions/workflows/ci.yml/badge.svg)](https://github.com/Raiffeisen-DGTL/ecom-sdk-node/actions/workflows/ci.yml)
-[![Latest Stable Version](https://img.shields.io/npm/v/@raiffeisen-ecom/payment-sdk-node)](https://www.npmjs.com/package/@raiffeisen-ecom/payment-sdk-node)
-[![Total Downloads](https://img.shields.io/npm/dt/@raiffeisen-ecom/payment-sdk-node)](https://www.npmjs.com/package/@raiffeisen-ecom/payment-sdk-node)
+[![Latest Stable Version](https://img.shields.io/npm/v/@raiffeisen-ecom/payment-sdk)](https://www.npmjs.com/package/@raiffeisen-ecom/payment-sdk)
+[![Total Downloads](https://img.shields.io/npm/dt/@raiffeisen-ecom/payment-sdk)](https://www.npmjs.com/package/@raiffeisen-ecom/payment-sdk)
 
 SDK модуль для внедрения эквайринга Райффайзенбанка.
 
@@ -11,19 +11,19 @@ SDK модуль для внедрения эквайринга Райффайз
 Установка:
 
 ```bash
-$ npm require @raiffeisen-ecom/payment-sdk-node
+$ npm require @raiffeisen-ecom/payment-sdk
 ```
 
 Подключение для cjs-модулей:
 
 ```ts
-const { Client, ClientException } = require('@raiffeisen-ecom/payment-sdk-node');
+const { Client, ClientException } = require('@raiffeisen-ecom/payment-sdk');
 ```
 
 Подключение для esm-модулей:
 
 ```ts
-import { Client, ClientException } from '@raiffeisen-ecom/payment-sdk-node';
+import { Client, ClientException } from '@raiffeisen-ecom/payment-sdk';
 ```
 
 ## Документация
@@ -156,6 +156,84 @@ console.log(response);
   }
 }
 ```
+
+Метод `getPayJS` вернет JavaScript для отображения платежной формы на странице.
+Данный метод подходит для передачи чеков.
+В параметрах нужно указать:
+
+* `amount` - сумма заказа;
+* `orderId` - идентификатор заказа;
+* `query` - дополнительные параметры запроса, а так же параметры чека.
+
+```ts
+const amount = 10;
+const orderId = 'testOrder';
+const query = {
+  'receipt': {
+    'items': [
+      {
+        'name': 'Тестовый товар',
+        'price': 10,
+        'quantity': 1,
+        'paymentObject': 'COMMODITY',
+        'paymentMode': 'FULL_PAYMENT',
+        'amount': 10,
+        'vatType': 'VAT20'
+      }
+    ]
+  }
+};
+
+const js = client.getPayJS(amount, orderId, query);
+
+console.log(js);
+```
+
+Вывод:
+
+```js
+(({
+    publicId,
+    formData,
+    url = 'https://e-commerce.raiffeisen.ru/pay',
+    method = 'openPopup',
+    sdk = 'PaymentPageSdk',
+    src = 'https://pay.raif.ru/pay/sdk/v2/payment.styled.min.js',
+}) => new Promise((resolve, reject) => {
+    const openPopup = () => {
+        new this[sdk](publicId, {url})[method](formData).then(resolve).catch(reject);
+    };
+    if (!this.hasOwnProperty(sdk)) {
+        const script = this.document.createElement('script');
+        script.src = src;
+        script.onload = openPopup;
+        script.onerror = reject;
+        this.document.head.appendChild(script);
+    } else openPopup();
+}))({
+    "publicId": "***",
+    "url": "https://e-commerce.raiffeisen.ru/pay",
+    "formData": {
+        "orderId": "testOrder",
+        "amount": 10,
+        "receipt": {
+            "items": [
+                {
+                    "name": "Тестовый товар",
+                    "price": 10,
+                    "quantity": 1,
+                    "paymentObject": "COMMODITY",
+                    "paymentMode": "FULL_PAYMENT",
+                    "amount": 10,
+                    "vatType": "VAT20"
+                }
+            ]
+        }
+    }
+})
+```
+
+Данный JS можно встроить на страницу непосредственно с помощью тега SCRIPT или использовать как Promise в собственных сценариях.
 
 ### Оформление возврата по платежу
 

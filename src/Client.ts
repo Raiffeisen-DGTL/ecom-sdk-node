@@ -12,6 +12,27 @@ const CLIENT_NAME: string = process.env.CLIENT_NAME ?? 'node_sdk';
 const CLIENT_VERSION: string = process.env.CLIENT_NAME ?? require('../package.json').version;
 
 /**
+ * Helper function for objects property check.
+ */
+function hasOwnProperty<X extends {}, Y extends PropertyKey>(obj: X, prop: Y): obj is X & Record<Y, unknown> {
+  return obj.hasOwnProperty(prop)
+}
+
+/**
+ * Helper function for object check.
+ */
+function isObject<X extends {}>(item: any): item is X  {
+  return (item && typeof item === 'object' && !Array.isArray(item));
+}
+
+/**
+ * Helper function for extract object from property.
+ */
+function extractObject<X extends {}, Y extends PropertyKey>(obj: X, prop: Y): object {
+  return hasOwnProperty(obj, prop) && isObject(obj[prop]) ? obj[prop] : {};
+}
+
+/**
  * Client for ecommerce payment API.
  *
  * @see https://pay.raif.ru/doc/ecom.html API Documentation.
@@ -182,6 +203,63 @@ export default class Client {
   }
 
   /**
+   * Post payment form witch success URL param.
+   *
+   * @param amount The order data.
+   * @param orderId The order identifier.
+   * @param query The additional query params.
+   * @param baseUrl The base payment form url.
+   */
+  getPayJS<Q>(
+      amount: number,
+      orderId: string,
+      query: Q|undefined = undefined,
+      baseUrl: string = this.PAYMENT_FORM_URI
+  ): string {
+    const request = {
+      publicId: this.publicId,
+      url: new URL(`${this.host}${baseUrl}/`).toString(),
+      formData: {
+        amount,
+        orderId,
+        extra: {
+          apiClient: CLIENT_NAME,
+          apiClientVersion: CLIENT_VERSION,
+          ...(extractObject(query ?? {}, 'extra'))
+        },
+        ...(query ?? {})
+      },
+    };
+
+    const getPromise = (
+      {
+         publicId,
+         formData,
+         url = 'https://e-commerce.raiffeisen.ru/pay',
+         method = 'openPopup',
+         sdk = 'PaymentPageSdk',
+         src = 'https://pay.raif.ru/pay/sdk/v2/payment.styled.min.js'
+      }: any
+    ): Promise<any> => new Promise((resolve, reject) => {
+      const openPopup = () => {
+        // @ts-ignore
+        this[sdk](publicId, {url})[method](formData).then(resolve).catch(reject);
+      };
+      if (!this.hasOwnProperty(sdk)) {
+        // @ts-ignore
+        const script = this.document.createElement('script');
+        script.src = src;
+        script.onload = openPopup;
+        script.onerror = reject;
+        // @ts-ignore
+        this.document.head.appendChild(script);
+      } else openPopup();
+    });
+
+    return '(' + getPromise.toString() + ')(' + JSON.stringify(request) + ')';
+  }
+
+  /**
    * Get pay URL witch success URL param.
    *
    * @param amount The order data.
@@ -221,6 +299,11 @@ export default class Client {
       publicId: this.publicId,
       amount,
       orderId,
+      extra: {
+        apiClient: CLIENT_NAME,
+        apiClientVersion: CLIENT_VERSION,
+        ...(extractObject(query ?? {}, 'extra'))
+      },
       ...(query ?? {})
     };
 
