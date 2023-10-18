@@ -1,5 +1,5 @@
 {
-  "name": "@raiffeisen-ecom/payment-sdk",
+  "name": "@raiffeisen-ecom/payment-sdk-node",
   "version": "0.0.2",
   "description": "Ecommerce payment API SDK",
   "license": "MIT",
