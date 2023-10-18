@@ -1,8 +1,8 @@
 # Ecommerce payment API SDK
 
 [![Build Status](https://github.com/Raiffeisen-DGTL/ecom-sdk-node/actions/workflows/ci.yml/badge.svg)](https://github.com/Raiffeisen-DGTL/ecom-sdk-node/actions/workflows/ci.yml)
-[![Latest Stable Version](https://img.shields.io/npm/v/@raiffeisen-ecom/payment-sdk)](https://www.npmjs.com/package/@raiffeisen-ecom/payment-sdk-node)
-[![Total Downloads](https://img.shields.io/npm/dt/@raiffeisen-ecom/payment-sdk)](https://www.npmjs.com/package/@raiffeisen-ecom/payment-sdk-node)
+[![Latest Stable Version](https://img.shields.io/npm/v/@raiffeisen-ecom/payment-sdk-node)](https://www.npmjs.com/package/@raiffeisen-ecom/payment-sdk-node)
+[![Total Downloads](https://img.shields.io/npm/dt/@raiffeisen-ecom/payment-sdk-node)](https://www.npmjs.com/package/@raiffeisen-ecom/payment-sdk-node)
 
 SDK модуль для внедрения эквайринга Райффайзенбанка.
 
